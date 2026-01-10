@@ -4,8 +4,8 @@ project(Oxygen)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(Oxygen src/main.cpp
-        helpers/Arena.hpp
-        helpers/Generation.hpp
-        helpers/Parser.hpp
         helpers/Tokenizer.hpp
+        helpers/Generation.hpp
+        helpers/Arena.hpp
+        helpers/Parser.hpp
 )

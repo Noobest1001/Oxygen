@@ -56,9 +56,16 @@ class Generator
 
 				void operator()(const NodeLabelStmt* label_expr)
 				{
-					generator.m_output << ""
+					generator.m_output << "";
 				}
 			};
+		}
+
+		[[nodiscard]] std::string gen_prog()
+		{
+			m_output << "section .bss\n";
+			m_output << "    input_buffer: resb 128";
+
 		}
 
 	private:
@@ -92,24 +99,63 @@ class Generator
 			m_scopes.pop_back();
 		}
 
-		std::string ArgtoAsm(const int argType = 0, const std::optional<std::string> &label = std::nullopt)
+		std::stringstream ArgtoAsm(const int argType = 0, const std::variant<std::string, std::optional<std::string>, int> &label = std::nullopt)
 		{
+
+			// Write
 			if (argType == 0)
 			{
-				if (!label.has_value())
+				std::string temp;
+
+				if (std::holds_alternative<std::string>(label))
 				{
-					std::cerr << "[Argument error] message has no value";
+					if (temp = std::get<std::string>(label); temp.empty())
+					{
+						std::cerr << "[Argument error] message has no value";
+						exit(EXIT_FAILURE);
+					}
+				}
+				if (std::holds_alternative<int>(label))
+				{
+					std::cerr << "[Input error]message can not be and integer!";
 					exit(EXIT_FAILURE);
 				}
-				m_output << "    mov rax, 1\n";
-				m_output << "    mov rdi, 1\n";
-				m_output << "    mov rsi, " << label.value() << "\n";
-				m_output << "    mov rdx, " << label->length() << "\n";
+				m_output << "   mov rax, 1\n";
+				m_output << "   mov rdi, 1\n";
+				m_output << "   mov rsi, " << temp << "\n";
+				m_output << "   mov rdx, " << temp.length() << "\n";
+
+				return std::move(m_output);
 			}
+			// Read
 			if (argType == 1)
 			{
-
+				m_output << "   mov rax, 0\n";
+				m_output << "   mov rdi, 1\n";
+				m_output << "   mov rsi, [rel input_buffer]\n";
+				m_output << "   mov rdx, 128\n";
+				return std::move(m_output);
 			}
+			// exit/ return
+			if (argType == 2)
+			{
+				int number = -1;
+				if (std::holds_alternative<int>(label))
+				{
+					number = std::get<int>(label);
+				}
+				if (number == -1)
+				{
+					std::cerr << "Exit code not provided!";
+					exit(EXIT_FAILURE);
+				}
+				m_output << "   mov rax, 60\n";
+				m_output << "	mov rdx, " << number << "\n";
+				m_output << "   syscall\n";
+				return std::move(m_output);
+			}
+			std::cerr << "[Argument error] Invalid argument type!";
+			exit(EXIT_FAILURE);
 		}
 
 		std::string create_label()
@@ -127,6 +173,7 @@ class Generator
 		const NodeProg m_prog;
 		std::stringstream m_output;
 		size_t m_stack_size = 0;
+		size_t m_string_counter = 0;
 		std::vector<Var> m_vars {};
 		std::vector<size_t> m_scopes {};
 		int m_label_count = 0;

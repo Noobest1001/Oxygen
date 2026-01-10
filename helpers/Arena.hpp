@@ -7,9 +7,7 @@
 class ArenaAllocator {
 public:
     explicit ArenaAllocator(const size_t max_num_bytes)
-        : m_size { max_num_bytes }
-        , m_buffer { new std::byte[max_num_bytes] }
-        , m_offset { m_buffer }
+        : m_size { max_num_bytes }, m_buffer { new std::byte[max_num_bytes] }, m_offset { m_buffer }
     {
     }
 
@@ -17,11 +15,7 @@ public:
     ArenaAllocator& operator=(const ArenaAllocator&) = delete;
 
     ArenaAllocator(ArenaAllocator&& other) noexcept
-        : m_size { std::exchange(other.m_size, 0) }
-        , m_buffer { std::exchange(other.m_buffer, nullptr) }
-        , m_offset { std::exchange(other.m_offset, nullptr) }
-    {
-    }
+        : m_size { std::exchange(other.m_size, 0) }, m_buffer { std::exchange(other.m_buffer, nullptr) }, m_offset { std::exchange(other.m_offset, nullptr) } {}
 
     ArenaAllocator& operator=(ArenaAllocator&& other) noexcept
     {

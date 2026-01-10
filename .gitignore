@@ -39,3 +39,10 @@
 
 # debug information files
 *.dwo
+
+#CLion folder
+./.idea
+
+#VSCode folder
+./vscode
+./.vs
