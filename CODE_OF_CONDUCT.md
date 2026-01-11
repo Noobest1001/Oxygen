@@ -66,6 +66,39 @@ All complaints will be reviewed and investigated promptly and fairly.
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
 
+## Git(Hub) specific Guidelines
+#### 1. `git push` usage
+Please, do not use `git push` in inappropriate contexts (e.g. pushing to the wrong branch). Please use `git push origin <branch-name>` instead.
+#### 4. `git pull` usage
+Please, do not use `git pull` in inappropriate contexts (e.g. pulling from the wrong branch). Please use `git pull origin <branch-name>` instead.
+#### 5. `git branch` usage
+Please, do not use `git branch` in inappropriate contexts (e.g. mass-creating branches to overload upstream). Please use `git checkout -b <branch-name>` instead.
+#### 6. `git merge` usage
+Please, do not use `git merge` in inappropriate contexts (e.g. merging from the wrong branch). Please use `git merge origin <branch-name>` instead.
+#### 7. `git reset` usage
+Just do not use `git reset` at all. It is too dangerous and can lead to data loss.
+#### 8. `git submodule` usage
+Please, do not abuse `git submodule` to pull in malicious code or assets. If you are unsure, audit the codebase of the submodule before using it.
+#### 9. `git tag` usage
+Do not use `git tag` to create tags that are not aligned to this Code of Conduct.
+#### 10.`git commit` usage
+Please, do not use `git commit` in inappropriate contexts (e.g. "committing a [redacted]"). Please use `git commit -m "fix [redacted]"` instead.**
+#### 11. `git backfill` usage
+Please, do not use `git backfill` in inappropriate contexts (e.g. backfilling from the wrong project). Please use `git checkout -b <branch-name>` instead.
+#### 12. `git revert` usage
+Do not abuse `git revert`(e.g. edit warring `stdint.oxy`).
+
+## Discord-specific Guidelines
+#### 1. `@everyone`/`@here` usage
+Do not use `@everyone` or `@here` in inappropriate contexts (e.g. "@everyone will you marry me"). Please use `#general` or `#general-questions` instead.
+#### 2. `#general`/`#general-questions` usage
+`#general` and `#general-questions` are the preferred channels for discussing
+general stuff about Oxygen. However, if other channels are more appropriate, please use them.
+#### 3. `#legal` usage
+Do not use `#legal` in inappropriate contexts (e.g. "how do i [redacted]?"). Please use `#general` or `#general-questions` instead.
+#### 4. Enforcement
+In the specific case of Discord, bans from the Oxygen club Discord server may be an acceptable consequence of a violation of this Code of Conduct. If you believe that a member of the Oxygen club Discord server has violated this Code of Conduct, please report it to the community leaders responsible for enforcement at https://discord.gg/n76WkfcR.
+
 ## Enforcement Guidelines
 
 Community leaders will follow these Community Impact Guidelines in determining
