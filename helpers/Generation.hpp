@@ -22,8 +22,24 @@ class Generator
 
 				void operator()(const NodeTermInt* term)
 				{
+					//TODO ask Soviet to do this part
+				}
+
+				void operator()(const NodeTermFloat* term)
+				{
 
 				}
+
+				void operator()(const NodeTermBool* term)
+				{
+
+				}
+
+				void operator()(const NodeTermString* term)
+				{
+
+				}
+				void
 			};
 		}
 
@@ -45,7 +61,7 @@ class Generator
 			};
 
 			ExprVisitor visitor {.generator = *this};
-			std::visit(visitor, bin_expr -> var);
+			std::visit(visitor, bin_expr ->_op);
 		}
 
 		void gen_method(const std::string&, const NodeLabelStmt* label_expr)
@@ -65,10 +81,19 @@ class Generator
 		{
 			m_output << "section .bss\n";
 			m_output << "    input_buffer: resb 128";
+			m_output << "\n";
+			m_output << "section .text\n";
+			m_output << "    global _start\n";
+			m_output << "_start:\n";
+			for (const NodeStmt* stmt : m_prog.stmts)
+			{
+				gen_stmt(stmt);
+			}
 
 		}
 
 	private:
+		// I don't know how to do assembly so could one of you help me with this part?
 		void push(const std::string& reg)
 		{
 			m_output << "    push " << reg << "\n";
@@ -117,13 +142,14 @@ class Generator
 				}
 				if (std::holds_alternative<int>(label))
 				{
-					std::cerr << "[Input error]message can not be and integer!";
+					std::cerr << "[Input error] message can not be an integer!";
 					exit(EXIT_FAILURE);
 				}
 				m_output << "   mov rax, 1\n";
 				m_output << "   mov rdi, 1\n";
 				m_output << "   mov rsi, " << temp << "\n";
 				m_output << "   mov rdx, " << temp.length() << "\n";
+				m_output << "   syscall\n";
 
 				return std::move(m_output);
 			}
@@ -134,6 +160,7 @@ class Generator
 				m_output << "   mov rdi, 1\n";
 				m_output << "   mov rsi, [rel input_buffer]\n";
 				m_output << "   mov rdx, 128\n";
+				m_output << "   syscall\n";
 				return std::move(m_output);
 			}
 			// exit/ return
@@ -152,6 +179,15 @@ class Generator
 				m_output << "   mov rax, 60\n";
 				m_output << "	mov rdx, " << number << "\n";
 				m_output << "   syscall\n";
+				return std::move(m_output);
+			}
+			// Clear read buffer
+			if (argType == 3)
+			{
+				m_output << "   mov edi, input_buffer\n";
+				m_output << "	xor al, al";
+				m_output << "	mov ecx, 128\n";
+				m_output << "	rep stosb\n";
 				return std::move(m_output);
 			}
 			std::cerr << "[Argument error] Invalid argument type!";

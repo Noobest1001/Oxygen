@@ -32,6 +32,11 @@ struct NodeTermBool
 	Token _bool;
 };
 
+struct NodeTermDouble
+{
+	Token _double;
+};
+
 struct NodeTermIdent
 {
 	Token _ident;
@@ -81,7 +86,7 @@ struct NodeBinExpr
 
 struct NodeTerm
 {
-	std::variant<NodeTermInt*, NodeTermFloat*, NodeTermString*, NodeTermChar*, NodeExpr*, NodeTermIdent*, NodeTermParen*> _expr;
+	std::variant<NodeTermInt*, NodeTermFloat*, NodeTermString*, NodeTermChar*,NodeTermBool* ,NodeTermDouble*, NodeExpr*, NodeTermIdent*, NodeTermParen*> _expr;
 };
 
 struct NodeExpr
@@ -170,21 +175,9 @@ class Parser
 				auto term = m_allocator.emplace<NodeTerm>(expr);
 				return term;
 			}
-			if (auto string_init = try_consume(TokenType::symbol_word))
+			if (auto integer = try_consume(TokenType::type_int))
 			{
-				auto expr = m_allocator.emplace<NodeTermString>(string_init.value());
-				auto term = m_allocator.emplace<NodeTerm>(expr);
-				return term;
-			}
-			if (auto _char = try_consume(TokenType::symbol_char))
-			{
-				auto expr = m_allocator.emplace<NodeTermChar>(_char.value());
-				auto term = m_allocator.emplace<NodeTerm>(expr);
-				return term;
-			}
-			if (auto _int = try_consume(TokenType::type_int))
-			{
-				auto expr = m_allocator.emplace<NodeTermInt>(_int.value());
+				auto expr = m_allocator.emplace<NodeTermInt>(integer.value());
 				auto term = m_allocator.emplace<NodeTerm>(expr);
 				return term;
 			}
@@ -194,19 +187,28 @@ class Parser
 				auto term = m_allocator.emplace<NodeTerm>(expr);
 				return term;
 			}
+			if (auto _double = try_consume(TokenType::type_double))
+			{
+				auto expr = m_allocator.emplace<NodeTermDouble>(_double.value());
+				auto term = m_allocator.emplace<NodeTerm>(expr);
+				return term;
+			}
 			if (auto _string = try_consume(TokenType::type_string))
 			{
 				auto expr = m_allocator.emplace<NodeTermString>(_string.value());
 				auto term = m_allocator.emplace<NodeTerm>(expr);
 				return term;
 			}
-			if (const auto _open_paren = try_consume(TokenType::symbol_open_paren))
+			if (auto _char = try_consume(TokenType::type_char))
 			{
-				auto expr = parse_expr();
-				if (!expr.has_value()) { error_expected("expression"); }
-				try_consume_err(TokenType::symbol_close_paren);
-				auto term_paren = m_allocator.emplace<NodeTermParen>(expr.value());
-				auto term = m_allocator.emplace<NodeTerm>(term_paren);
+				auto expr = m_allocator.emplace<NodeTermChar>(_char.value());
+				auto term = m_allocator.emplace<NodeTerm>(expr);
+				return term;
+			}
+			if (auto _bool = try_consume(TokenType::type_bool))
+			{
+				auto expr = m_allocator.emplace<NodeTermBool>(_bool.value());
+				auto term = m_allocator.emplace<NodeTerm>(expr);
 				return term;
 			}
 			return {};
