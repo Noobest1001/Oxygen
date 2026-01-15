@@ -38,9 +38,9 @@ std::string Tokenizer::to_string(const TokenType type)
 			return "property";
 		case TokenType::keyword_function:
 			return "function";
-		case TokenType::symbol_const:
+		case TokenType::keyword_const:
 			return "const";
-		case TokenType::symbol_let:
+		case TokenType::keyword_let:
 			return "let";
 		case TokenType::symbol_open_paren:
 			return "(";
@@ -125,6 +125,10 @@ std::vector<Token> Tokenizer::tokenize()
 			}
 			else if (buffer == "let") {
 				tokens.push_back({TokenType::keyword_let, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "class")  {
+				tokens.push_back({TokenType::keyword_class, line_counter});
 				buffer.clear();
 			}
 			else if (buffer == "int")

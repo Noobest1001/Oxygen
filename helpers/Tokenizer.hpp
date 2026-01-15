@@ -23,6 +23,7 @@ enum class TokenType
 	keyword_function,
 	keyword_const,
 	keyword_let,
+	keyword_class,
 	symbol_open_paren,
 	symbol_close_paren,
 	symbol_open_brace,
