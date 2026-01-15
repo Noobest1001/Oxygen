@@ -32,6 +32,12 @@ std::string Tokenizer::to_string(const TokenType type)
 		case TokenType::keyword_write:
 			return "write";
 			// symbols... I don't know how to describe this.
+		case TokenType::keyword_dynamic:
+			return "dynamic";
+		case TokenType::keyword_property:
+			return "property";
+		case TokenType::keyword_function:
+			return "function";
 		case TokenType::symbol_open_paren:
 			return "(";
 		case TokenType::symbol_close_paren:
@@ -94,6 +100,18 @@ std::vector<Token> Tokenizer::tokenize()
 			else if (buffer == "else")
 			{
 				tokens.push_back({TokenType::keyword_else, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "dynamic") {
+				tokens.push_back({TokenType::keyword_dynamic, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "property") {
+				tokens.push_back({TokenType::keyword_property, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "function") {
+				tokens.push_back({TokenType::keyword_function, line_counter});
 				buffer.clear();
 			}
 			else if (buffer == "int")
