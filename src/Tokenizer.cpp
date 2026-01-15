@@ -32,13 +32,24 @@ std::string Tokenizer::to_string(const TokenType type)
 		case TokenType::keyword_write:
 			return "write";
 			// symbols... I don't know how to describe this.
+		case TokenType::keyword_dynamic:
+			return "dynamic";
+		case TokenType::keyword_property:
+			return "property";
+		case TokenType::keyword_function:
+			return "function";
+		case TokenType::keyword_const:
+			return "const";
+		case TokenType::keyword_let:
+			return "let";
 		case TokenType::symbol_open_paren:
 			return "(";
 		case TokenType::symbol_close_paren:
 			return ")";
-			// TODO add functions
-			//  case TokenType::symbol_open_brace: return "{";
-			//  case TokenType::symbol_closed_brace: return "}"; For Functions later on
+		case TokenType::symbol_open_brace:
+			return "{";
+		case TokenType::symbol_closed_brace:
+			return "}";
 		case TokenType::symbol_equals:
 			return "=";
 		case TokenType::symbol_plus:
@@ -94,6 +105,30 @@ std::vector<Token> Tokenizer::tokenize()
 			else if (buffer == "else")
 			{
 				tokens.push_back({TokenType::keyword_else, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "dynamic") {
+				tokens.push_back({TokenType::keyword_dynamic, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "property") {
+				tokens.push_back({TokenType::keyword_property, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "function") {
+				tokens.push_back({TokenType::keyword_function, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "const") {
+				tokens.push_back({TokenType::keyword_const, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "let") {
+				tokens.push_back({TokenType::keyword_let, line_counter});
+				buffer.clear();
+			}
+			else if (buffer == "class")  {
+				tokens.push_back({TokenType::keyword_class, line_counter});
 				buffer.clear();
 			}
 			else if (buffer == "int")

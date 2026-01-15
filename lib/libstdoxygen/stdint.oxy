@@ -1,0 +1,144 @@
+#[os="linux"]
+include 'linux_kernel_abi.oxy"
+
+const SYS_getresgid = 0x27
+
+function _linux_syscall(int syscall_id, ...) {
+    asm {
+        mov rax, syscall_id
+        syscall
+    }
+}
+
+function read(unsigned int fd, char *buf, size_t count) {}
+function write(unsigned int fd, const char *buf, size_t count) {}
+function open(const char *path, int flags, mode_t mode) {}
+function close(unsigned int fd){}
+function newstat(struct stat *buf, const char *path) {}
+function newfstat(struct stat *buf, const char *path) {}
+function newlstat(const char *filename, struct stat *statbuf) {}
+function poll(struct pollfd *ufds, nfds_t nfds, int timeout) {}
+function lseek(unsigned int fd, off_t offset, int whence) {}
+function mmap(unsigned long addr, unsigned long len, int prot, int flags, int fd, off_t offset) {}
+function mprotect(unsigned long start, unsigned long len, int prot) {}
+function munmap(unsigned long start, unsigned long len) {}
+function brk(unsigned long addr) {}
+function rt_sigaction(int signum, const struct sigaction *act, struct sigaction *oldact) {}
+function rt_sigprocmask(int how, const sigset_t *set, sigset_t *oldset) {}
+function rt_sigreturn(){}
+function ioctl(unsigned int fd, unsigned int cmd, unsigned long arg){}
+function pread64(unsigned int fd, char *buf, size_t count, loff_t pos){}
+function pwrite64(unsigned int fd, const char *buf, size_t count, loff_t pos){}
+function readv(unsigned int fd, const struct iovec *iov, int iovcnt) {}
+function writev(unsigned int fd, const struct iovec *iov, int iovcnt) {}
+function access(const char *pathname, int mode) {}
+function pipe(int pipefd[2]) {}
+function select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout) {}
+function sched_yield() {}
+function mremap(unsigned long addr, unsigned long old_len, unsigned long new_len, unsigned long flags, unsigned long new_addr) {}
+function msync(unsigned long start, unsigned long len, int flags) {}
+function mincore(unsigned long start, unsigned long len, unsigned char *vec) {}
+function madvise(unsigned long start, unsigned long len, int advice) {}
+function shmget(key_t key, size_t size, int flags) {}
+function shmat(int shmid, void *shmaddr, int shmflg) {}
+function shmctl(int shmid, int cmd, struct shmid_ds *buf) {}
+function dup(int oldfd) {}
+function dup2(int oldfd, int newfd) {}
+function pause() {}
+function nanosleep(struct timespec *req, struct timespec *rem) {}
+function getitimer(int which, struct itimerval *value) {}
+function alarm(unsigned int seconds) {}
+function setitimer(int which, const struct itimerval *value, struct itimerval *oldvalue) {}
+dynamic property pid {
+    function get() {
+        return _linux_syscall(0x27);
+    }
+}
+function sendfile64(int out_fd, int in_fd, loff_t *offset, size_t count) {}
+function socket(int family, int type, int protocol) {}
+function connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen) {}
+function accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen) {}
+function sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t dest_len) {}
+function recvfrom(int sockfd, void *buf, size_t len, int flags, struct sockaddr *src_addr, socklen_t *addrlen) {}
+function sendmsg(int sockfd, const struct msghdr *msg, int flags) {}
+function recvmsg(int sockfd, struct msghdr *msg, int flags) {}
+function shutdown(int sockfd, int how) {}
+function bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen) {}
+function listen(int sockfd, int backlog) {}
+function getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen) {}
+function getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen) {}
+function setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen) {}
+function getsockopt(int sockfd, int level, int optname, void *optval, socklen_t *optlen) {}
+function clone(int flags, const void *child_stack, size_t stack_size, int *child_pid) {}
+function fork() {}
+function vfork() {}
+function execve(const char *filename, char *const argv[], char *const envp[]) {}
+function wait4(int pid, int *status, int options, struct rusage *rusage) {}
+function kill(int pid, int sig) {}
+function newuname(struct utsname *buf) {}
+function semget(key_t key, int nsems, int semfig) {}
+function semop(int semid, struct sembuf *sembuf, unsigned int nsops) {}
+function semctl(int semid, int semnum, int cmd, union semun arg) {}
+function shmdt(const void *shmaddr) {}
+function msgget(key_t key, int msgflg) {}
+function msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg) {}
+function msgrcv(int msqid, void *msgp, size_t msgsz, long msgtyp, int msgflg) {}
+function msgctl(int msqid, int cmd, struct msqid_ds *buf) {}
+function fcntl(int fd, int cmd, ...) {}
+function flock(int fd, int operation) {}
+function fsync(int fd) {}
+function fdatasync(int fd) {}
+function truncate(const char *path, off_t length) {}
+function ftruncate(const char *path, off_t length) {}
+function getdents(int fd, struct dirent *dirent, size_t count) {}
+function getcwd(char *buf, size_t size) {}
+function chdir(const char *path) {}
+function fchdir(int fd) {}
+function rename(const char *oldpath, const char *newpath) {}
+function mkdir(const char *pathname, mode_t mode) {}
+function rmdir(const char *pathname) {}
+function creat(const char *pathname, mode_t mode) {}
+function link(const char *oldpath, const char *newpath) {}
+function unlink(const char *pathname) {}
+function symlink(const char *target, const char *linkpath) {}
+function readlink(const char *path, char *buf, size_t bufsiz) {}
+function chmod(const char *pathname, mode_t mode) {}
+function fchmod(int fd, mode_t mode) {}
+function chown(const char *pathname, uid_t owner, gid_t group) {}
+function fchown(int fd, uid_t owner, gid_t group) {}
+function lchown(const char *pathname, uid_t owner, gid_t group) {}
+function umask(mode_t mask) {}
+dynamic property timeofday {
+    function get() {
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        return tv;
+    }
+    function set(timeval *tv) {
+        settimeofday(tv, NULL);
+    }
+}
+function gettimeofday(struct timeval *tv, struct timezone *tz) {}
+function settimeofday(struct timeval *tv, const struct timezone *tz) {}
+function getrusage(int who, struct rusage *ru) {}
+function sysinfo(struct sysinfo *info) {}
+function times(struct tms *tbuf) {}
+function ptrace(long request, pid_t pid, long addr, long data) {}
+function syslog(int type, char *buf, int len){}
+include 'stdint/usermgmt.oxy'
+dynamic property ppid {
+    function get() {
+        return _linux_syscall(0x2e);
+    }
+    function set() {
+        return _linux_syscall(0x2f);
+    }
+}
+dynamic property sid {
+    function get() {
+        return _linux_syscall(0x30);
+    }
+    function set() {
+        return _linux_syscall(0x70);
+    }
+}

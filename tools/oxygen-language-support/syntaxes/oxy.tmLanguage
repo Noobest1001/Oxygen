@@ -1,0 +1,20 @@
+{scopeName = 'source.oxygen';
+    fileTypes = ('oxy');
+    foldingStartMarker = '\{\s*$';
+    foldingStopMarker = '\}\s*$';
+    patterns = (
+        {
+            name = 'keyword.control.oxygen';
+            match = '\\b(if|else|elif|dynamic|property|const|let)\\b';
+        },
+        {  name = 'string.quoted.double.oxygen';
+           begin = '"';
+           end = '"';
+           patterns = ( 
+              {  name = 'constant.character.escape.oxygen';
+                 match = '\\.';
+              }
+           );
+        },
+    )
+}

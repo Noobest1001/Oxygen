@@ -1,0 +1,89 @@
+dynamic property uid {
+    function get() {
+        return _linux_syscall(0x23);
+    }
+    function set() {
+        return _linux_syscall(0x24);
+    }
+}
+dynamic property gid {
+    function get() {
+        return _linux_syscall(0x25);
+    }
+    function set() {
+        return _linux_syscall(0x26);
+    }
+}
+dynamic property euid {
+    function get() {
+        return _linux_syscall(0x28);
+    }
+    function set() {
+        return _linux_syscall(0x29);
+    }
+}
+dynamic property egid {
+    function get() {
+        return _linux_syscall(0x2a);
+    }
+    function set() {
+        return _linux_syscall(0x2b);
+    }
+}
+dynamic property resgid {
+    function get() {
+        return _linux_syscall(SYS_getresgid);
+    }
+    function set() {
+        return _linux_syscall(SYS_getresgid);
+    }
+}
+dynamic property resuid {
+    function get() {
+        return _linux_syscall(SYS_getresuid);
+    }
+    function set() {
+        return _linux_syscall(SYS_getresuid);
+    }
+}
+dynamic property euid {
+    function get() {
+        return _linux_syscall(SYS_geteuid);
+    }
+    function set() {
+        return _linux_syscall(SYS_geteuid);
+    }
+}
+dynamic property egid {
+    function get() {
+        return _linux_syscall(SYS_getegid);
+    }
+    function set() {
+        return _linux_syscall(SYS_getegid);
+    }
+}
+// DRY! Don't repeat yourself!
+dynamic property reuid {
+    function get() {
+        return _linux_syscall(SYS_getreuid);
+    }
+    function set() {
+        return _linux_syscall(SYS_getreuid);
+    }
+}
+dynamic property pgid {
+    function get() {
+        return _linux_syscall(0x2c);
+    }
+    function set() {
+        return _linux_syscall(0x2d);
+    }
+}
+dynamic property capabilities {
+    function get() {
+        return _linux_syscall(SYS_getcap);
+    }
+    function set() {
+        return _linux_syscall(SYS_setcap);
+    }
+}

@@ -128,6 +128,7 @@ struct NodeStmtIf {
 	NodeExpr* expr {};
 	NodeScope* scope {};
 	std::optional<NodeIfPred*> pred;
+	std::optional<NodeScope*> _else;
 };
 
 struct NodeStmtAssign {

@@ -37,6 +37,9 @@
 *.out
 *.app
 
+# Build folder
+build
+
 # debug information files
 *.dwo
 
@@ -46,6 +49,10 @@
 #VSCode folder
 ./vscode
 ./.vs
+
+# VSCodium extension build
+tools/oxygen-language-support/out
+tools/oxygen-language-support/node_modules
 
 #Cmake files
 CMakeCache.txt

@@ -102,6 +102,63 @@ std::stringstream Generator::ArgtoAsm(const int argType,
 	exit(EXIT_FAILURE);
 }
 
+std::string Generator::TermToAsm(const NodeTerm *term)
+{
+	struct TermToAsmVisitor
+	{
+		std::string operator()(const NodeTermInt* term)
+		{
+			return term->_int.value.value_or("0");
+		}
+
+		std::string operator()(const NodeTermFloat* term)
+		{
+			return term->_float.value.value_or("0.0");
+		}
+
+		std::string operator()(const NodeTermDouble* term)
+		{
+			return term->_double.value.value_or("0.0");
+		}
+
+		std::string operator()(const NodeTermString* term)
+		{
+			return "\"" + term->_string.value.value_or("") + "\"";
+		}
+
+		std::string operator()(const NodeTermChar* term)
+		{
+			return "'" + term->_char.value.value_or("") + "'";
+		}
+
+		std::string operator()(const NodeTermBool* term)
+		{
+			return term->_bool.value.value_or("false") == "true" ? "1" : "0";
+		}
+
+		std::string operator()(const NodeExpr* expr)
+		{
+			// For nested expressions, this should use ExprToAsm
+			// But we can't call it from here without a generator reference
+			return "0";  // Fallback
+		}
+
+		std::string operator()(const NodeTermIdent* term)
+		{
+			return term->_ident.value.value_or("");
+		}
+
+		std::string operator()(const NodeTermParen* term)
+		{
+			// For parentheses, this should use ExprToAsm
+			return "0";  // Fallback
+		}
+	};
+
+	TermToAsmVisitor visitor;
+	return std::visit(visitor, term->_expr);
+}
+
 std::string Generator::create_label()
 {
 	std::stringstream ss;

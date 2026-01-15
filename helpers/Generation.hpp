@@ -14,6 +14,12 @@ class Generator
 
 		void gen_bin_expr(const NodeBinExpr* bin_expr);
 
+		void gen_expr(const NodeExpr* expr);
+
+		[[nodiscard]] std::string ExprToAsm(const NodeExpr* expr);
+
+		std::string TermToAsm(const NodeTerm* term);
+
 		void gen_method(const std::string&, const NodeLabelStmt* label_expr)
 		{
 			struct ExprVisitor
