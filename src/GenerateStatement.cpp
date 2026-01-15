@@ -35,7 +35,17 @@ void Generator::gen_stmt(const NodeStmt *stmt)
 
       void operator()(const NodeStmtIf *stmt)
       {
-        // TODO add this
+        generator.m_output << "    cmp rax, 0\n";
+        generator.m_output << "    je .if_true\n";
+        if (stmt->_else) {
+          generator.m_output << "    jmp .else\n";
+        }
+        generator.m_output << ".if_true:\n";
+        generator.gen_stmt(stmt->_then);
+        if (stmt->_else) {
+          generator.m_output << ".else:\n";
+          generator.gen_stmt(stmt->_else);
+        }
       }
 
       void operator()(const NodeStmtAssign *stmt)
